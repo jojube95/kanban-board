@@ -5,7 +5,7 @@ import {TaskStorageService} from "../../services/task-storage.service";
 @Component({
   selector: 'app-column',
   templateUrl: './column.component.html',
-  styleUrls: ['./column.component.css']
+  styleUrls: ['./column.component.scss']
 })
 export class ColumnComponent implements OnInit {
   @Input() column: Column;
@@ -31,14 +31,14 @@ export class ColumnComponent implements OnInit {
     let target = $event.target;
     const targetClassName = target.className;
 
-    while( target.className !== 'list') {
+    while( target.className !== 'board-column') {
       target = target.parentNode;
     }
-    target = target.querySelector('.tasks');
+    target = target.querySelector('.tasks-container');
 
-    if(targetClassName === 'task') {
+    if(targetClassName === 'tasks-container') {
       $event.target.parentNode.insertBefore(document.getElementById(data), $event.target);
-    } else if(targetClassName === 'list__title') {
+    } else if(targetClassName === 'column-title') {
       if (target.children.length) {
         target.insertBefore(document.getElementById(data), target.children[0]);
       }else {

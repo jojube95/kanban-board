@@ -1,3 +1,16 @@
-<div>
-  <app-column *ngFor="let column of columns" [column]="column" [taskStorage]="taskStorage"></app-column>
+<div class="root">
+  <div class="board">
+
+    <div class="board-wrapper">
+
+      <div class="board-columns">
+        <app-column class="board-column" *ngFor="let column of columns" [column]="column" [taskStorage]="taskStorage"></app-column>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
+

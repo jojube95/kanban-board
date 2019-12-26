@@ -1,0 +1,9 @@
+<div class="list" (dragover)="allowDrop($event)" (drop)="drop($event)">
+  <p class="list__title"><strong>{{column.name}}</strong></p>
+  <div class="tasks">
+    <app-task *ngFor="let taskId of column.tasks" [task]="taskStorage.getTask(taskId)"></app-task>
+  </div>
+
+  <input #addTaskInput type="text" (keyup.enter)="onEnter(addTaskInput.value); addTaskInput.value=''; displayAddTask=false;" *ngIf="displayAddTask" autofocus>
+  <a href="#" class="list__newtask" (click)="toggleDisplayAddTask();">Add a task...</a>
+</div>

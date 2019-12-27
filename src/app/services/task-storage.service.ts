@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Task } from "../models/task";
+import { Task } from '../models/task';
 import { Column } from '../models/column';
 import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,36 @@ export class TaskStorageService {
       timeRunning: false,
       columnId: '2',
       projectId: '1'
+    },
+    {
+      _id: '5',
+      name: 'Task6',
+      description: 'Task6Description',
+      timeSpend: 0,
+      timeStopwatch: 0,
+      timeRunning: false,
+      columnId: '3',
+      projectId: '1'
+    },
+    {
+      _id: '6',
+      name: 'Task7',
+      description: 'Task7Description',
+      timeSpend: 0,
+      timeStopwatch: 0,
+      timeRunning: false,
+      columnId: '4',
+      projectId: '0'
+    },
+    {
+      _id: '7',
+      name: 'Task8',
+      description: 'Task8Description',
+      timeSpend: 0,
+      timeStopwatch: 0,
+      timeRunning: false,
+      columnId: '5',
+      projectId: '1'
     }
 
   ];
@@ -81,19 +112,12 @@ export class TaskStorageService {
 
   public getTasks(): Observable<Task[]> {
     const tasksObservable = new Observable<Task[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.tasks);
-          }, 1000);
+      observer.next(this.tasks);
     });
     return tasksObservable;
   }
 
   public getTasksByColumn(column: Column): Observable<Task[]>{
-    const tasksObservable = new Observable<Task[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.tasks);
-          }, 1000);
-    });
-    return tasksObservable;
+    return of(this.tasks.filter(task => task.columnId === column._id));
   }
 }

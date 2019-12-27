@@ -1,5 +1,8 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {Task} from "../../../models/task";
+import {Project} from "../../../models/project";
+import {ProjectStorageService} from "../../../services/project-storage.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-task',
@@ -8,10 +11,12 @@ import {Task} from "../../../models/task";
 })
 export class TaskComponent implements OnInit {
   @Input() task: Task;
+  project: Observable<Project>;
 
-  constructor() { }
+  constructor(private projectStorageService: ProjectStorageService) { }
 
   ngOnInit() {
+    this.project = this.projectStorageService.getProjectByTask(this.task);
   }
 
   dragStart(ev) {

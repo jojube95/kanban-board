@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Task } from "../models/task";
-import { Column } from '../models/column';
-import { Board } from '../models/board';
+import { Task } from '../models/task';
 import { Project } from '../models/project';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,19 +22,12 @@ export class ProjectStorageService {
 
   public getProjects(): Observable<Project[]> {
     const projectsObservable = new Observable<Project[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.projects);
-          }, 1000);
+      observer.next(this.projects);
     });
     return projectsObservable;
   }
 
-  getProjectByTask(task: Task): Observable<Project[]>{
-    const projectsObservable = new Observable<Project[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.projects);
-          }, 1000);
-    });
-    return projectsObservable;
+  getProjectByTask(task: Task): Observable<Project>{
+    return of(this.projects.filter(project => task.projectId === project._id).pop());
   }
 }

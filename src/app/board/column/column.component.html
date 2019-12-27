@@ -4,7 +4,7 @@
     </div>
 
     <div class="tasks-container">
-      <app-task *ngFor="let task of tasks" [task]="task"></app-task>
+      <app-task *ngFor="let task of (tasks | async)" [task]="task"></app-task>
     </div>
 
   <input #addTaskInput type="text" (keyup.enter)="onEnter(addTaskInput.value); addTaskInput.value=''; displayAddTask=false;" *ngIf="displayAddTask" autofocus>

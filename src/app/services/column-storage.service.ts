@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Task} from "../models/task";
 import { Column } from '../models/column';
 import { Board } from '../models/board';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,23 +23,31 @@ export class ColumnStorageService {
       name: 'Done',
       boardId: '0'
     },
+    {
+      _id: '3',
+      name: 'To do',
+      boardId: '1'
+    },
+    {
+      _id: '4',
+      name: 'Doing',
+      boardId: '1'
+    },
+    {
+      _id: '5',
+      name: 'Done',
+      boardId: '1'
+    }
   ];
 
   public getColumns(): Observable<Column[]> {
     const columnsObservable = new Observable<Column[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.columns);
-          }, 1000);
+      observer.next(this.columns);
     });
     return columnsObservable;
   }
 
   public getColumnsByBoard(board: Board): Observable<Column[]>{
-    const columnsObservable = new Observable<Column[]>(observer => {
-          setTimeout(() => {
-              observer.next(this.columns);
-          }, 1000);
-    });
-    return columnsObservable;
+    return of(this.columns.filter(column => column.boardId === board._id));
   }
 }

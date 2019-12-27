@@ -1,6 +1,8 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {Column} from "../../models/column";
 import {TaskStorageService} from "../../services/task-storage.service";
+import { Observable } from 'rxjs';
+import { Task } from 'src/app/models/task';
 
 @Component({
   selector: 'app-column',
@@ -9,15 +11,16 @@ import {TaskStorageService} from "../../services/task-storage.service";
 })
 export class ColumnComponent implements OnInit {
   @Input() column: Column;
-  @Input() taskStorage: TaskStorageService;
+  tasks: Observable<Task[]>;
   displayAddTask = false;
 
-  constructor() { }
+  constructor(private taskStorageService: TaskStorageService) { }
 
   toggleDisplayAddTask() {
     this.displayAddTask = ! this.displayAddTask;
   }
   ngOnInit(): void {
+    this.tasks =  this.taskStorageService.getTasksByColumn(this.column);
   }
 
   allowDrop($event) {
@@ -51,8 +54,7 @@ export class ColumnComponent implements OnInit {
   }
 
   onEnter(value: string) {
-    const taskId =  this.taskStorage.newTask(value);
-    this.column.tasks.push(taskId);
+    const taskId =  this.taskStorageService.newTask(new Task(value, value, '0', this.column._id, 0));
   }
 
 }

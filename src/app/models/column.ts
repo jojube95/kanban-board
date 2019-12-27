@@ -1,4 +1,10 @@
 export class Column {
+  _id: string;
   name: string;
-  tasks: string[];
+  boardId: string;
+
+  constructor(name: string, boardId?: string) {
+    this.name = name;
+    this.boardId = boardId || null;
+  }
 }

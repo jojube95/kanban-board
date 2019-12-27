@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {TaskStorageService} from "../services/task-storage.service";
 import {Column} from "../models/column";
+import { Observable } from 'rxjs';
+import { ColumnStorageService } from '../services/column-storage.service';
 
 @Component({
   selector: 'app-board',
@@ -8,28 +9,12 @@ import {Column} from "../models/column";
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-  taskStorage: TaskStorageService;
-  columns: Column[];
-  
-  constructor() { }
+  columns: Observable<Column[]>;
+
+  constructor(private columnStorageService: ColumnStorageService) { }
 
   setMockData(): void {
-    this.taskStorage = new TaskStorageService();
-    const columns: Column[] = [
-      {
-        name: 'To Do',
-        tasks: []
-      },
-      {
-        name: 'Doing',
-        tasks: []
-      },
-      {
-        name: 'Done',
-        tasks: []
-      }
-    ];
-    this.columns = columns;
+    this.columns = this.columnStorageService.getColumns();
   }
 
   ngOnInit() {

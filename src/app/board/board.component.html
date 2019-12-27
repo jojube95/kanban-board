@@ -9,7 +9,7 @@
 
 
   <div ngbDropdown class="d-inline-block">
-    <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Select board</button>
+    <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{selectedBoard.name}}</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
       <button ngbDropdownItem *ngFor="let board of (boards | async)" cdkDrag (click)="onClickBoard(board)">{{board.name}}</button>
 

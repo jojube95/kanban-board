@@ -6,6 +6,7 @@ import { Task } from 'src/app/models/task';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskDetailComponent} from './task-detail/task-detail.component';
 import {TaskAddComponent} from './task-add/task-add.component';
+import {Socket} from 'ngx-socket-io';
 
 
 @Component({
@@ -18,13 +19,14 @@ export class ColumnComponent implements OnInit {
   tasks: Observable<Task[]>;
   displayAddTask = false;
 
-  constructor(private matDialog: MatDialog, private taskStorageService: TaskStorageService) { }
+  constructor(private matDialog: MatDialog, private taskStorageService: TaskStorageService, private socket: Socket) { }
 
   toggleDisplayAddTask() {
     this.displayAddTask = ! this.displayAddTask;
   }
   ngOnInit(): void {
-    this.tasks =  this.taskStorageService.getTasksByColumn(this.column);
+    this.tasks = this.socket.fromEvent<Task[]>('tasks' + this.column._id);
+    this.taskStorageService.getTasksByColumn(this.column);
   }
 
   allowDrop($event) {
@@ -36,6 +38,8 @@ export class ColumnComponent implements OnInit {
     //Catched element Id
     const data = $event.dataTransfer.getData('text');
 
+    const taskData = JSON.parse($event.dataTransfer.getData('task'));
+
     //Element target
     let target = $event.target;
 
@@ -46,9 +50,7 @@ export class ColumnComponent implements OnInit {
       target = target.parentNode;
     }
 
-    console.log(target);
     target = target.querySelector('.tasks-container');
-    console.log(target);
 
     if(targetClassName === 'tasks-container') {
       $event.target.parentNode.insertBefore(document.getElementById(data), $event.target);
@@ -62,6 +64,13 @@ export class ColumnComponent implements OnInit {
     }
     else {
       target.appendChild(document.getElementById(data));
+    }
+
+    if(taskData.columnId != this.column._id){
+      //Update task values
+      taskData.columnId = this.column._id;
+      //Call service
+      this.taskStorageService.updateTask(taskData);
     }
 
   }

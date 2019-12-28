@@ -21,6 +21,7 @@ export class TaskComponent implements OnInit {
 
   dragStart(ev) {
     ev.dataTransfer.setData('text', ev.target.id);
+    ev.dataTransfer.setData('task', JSON.stringify(this.task));
   }
 
 }

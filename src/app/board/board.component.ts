@@ -19,7 +19,9 @@ export class BoardComponent implements OnInit {
   constructor(private boardStorageService: BoardStorageService, private columnStorageService: ColumnStorageService) { }
 
   ngOnInit() {
-    this.boards = this.boardStorageService.getBoards();
+    this.selectedBoard = new Board('Select board', false);
+    this.boards = this.boardStorageService.boards;
+    this.columns = this.columnStorageService.columns;
     this.boards.subscribe(boards => {
       boards.forEach(board => {
         if(board.favourite){
@@ -27,10 +29,11 @@ export class BoardComponent implements OnInit {
         }
       });
     });
+
   }
 
   onClickBoard(board: Board){
-    this.columns = this.columnStorageService.getColumnsByBoard(board);
+    this.columnStorageService.getColumnsByBoard(board);
     this.selectedBoard = board;
   }
 

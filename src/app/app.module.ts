@@ -13,6 +13,9 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import { TaskAddComponent } from './board/column/task-add/task-add.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { TaskAddComponent } from './board/column/task-add/task-add.component';
     NgbModule,
     MatDialogModule,
     NoopAnimationsModule,
-    FormsModule
+    FormsModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

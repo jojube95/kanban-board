@@ -1,5 +1,5 @@
 <div *ngIf="project | async as projectAux">
-  <div class="task" draggable="true" (dragstart)="dragStart($event)" id="{{task._id}}" [style.backgroundColor]="projectAux.color">
+  <div class="task" draggable="true" (dragstart)="dragStart($event, task)" id="{{task._id}}" [style.backgroundColor]="projectAux.color">
     <span class="projectName">{{projectAux.name}}</span><span class="taskName">{{task.name}}</span>
   </div>
 </div>

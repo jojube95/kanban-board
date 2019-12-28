@@ -3,12 +3,13 @@ import { Task } from '../models/task';
 import { Column } from '../models/column';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskStorageService {
-  tasks: Task[] = [
+  tasks: Observable<Task[]> = of([
     {
       _id: '1',
       name: 'Task1',
@@ -90,34 +91,25 @@ export class TaskStorageService {
       projectId: '1'
     }
 
-  ];
+  ]);
 
-  lastid = 4;
+  lastid = 8;
 
   constructor() { }
 
-  _addTask(task: Task) {
+  public addTask(task: Task) {
     task._id = String(++this.lastid);
-    this.tasks[task._id] = task;
-    return (task._id);
-  }
 
-  getTask(taskId: string) {
-    return this.tasks[taskId];
-  }
-
-  newTask(task: Task): string {
-    return (this._addTask(task));
+    this.tasks.subscribe(tasks => {
+      tasks.push(task);
+    });
   }
 
   public getTasks(): Observable<Task[]> {
-    const tasksObservable = new Observable<Task[]>(observer => {
-      observer.next(this.tasks);
-    });
-    return tasksObservable;
+   return this.tasks;
   }
 
   public getTasksByColumn(column: Column): Observable<Task[]>{
-    return of(this.tasks.filter(task => task.columnId === column._id));
+    return this.tasks.pipe(map(tasks => tasks.filter(task => task.columnId === column._id)));
   }
 }

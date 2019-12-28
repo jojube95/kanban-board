@@ -4,9 +4,9 @@
     </div>
 
     <div class="tasks-container">
-      <app-task *ngFor="let task of (tasks | async)" [task]="task" (click)="openModal(task)"></app-task>
+      <app-task *ngFor="let task of (tasks | async)" [task]="task" (click)="openModalTaskDetail(task)"></app-task>
     </div>
 
-  <input #addTaskInput type="text" (keyup.enter)="onEnter(addTaskInput.value); addTaskInput.value=''; displayAddTask=false;" *ngIf="displayAddTask" autofocus>
-  <a href="#" class="list__newtask" (click)="toggleDisplayAddTask();">Add a task...</a>
+  <!--<input #addTaskInput type="text" (keyup.enter)="onEnter(addTaskInput.value); addTaskInput.value=''; displayAddTask=false;" *ngIf="displayAddTask" autofocus>-->
+  <button class="btn" (click)="openModalTaskAdd()">Add a task...</button>
 </div>

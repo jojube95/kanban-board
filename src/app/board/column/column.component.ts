@@ -3,9 +3,10 @@ import {Column} from "../../models/column";
 import {TaskStorageService} from "../../services/task-storage.service";
 import { Observable } from 'rxjs';
 import { Task } from 'src/app/models/task';
-import {MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskDetailComponent} from './task-detail/task-detail.component';
-import {MatDialog} from '@angular/material/typings/dialog';
+import {TaskAddComponent} from './task-add/task-add.component';
+
 
 @Component({
   selector: 'app-column',
@@ -65,11 +66,7 @@ export class ColumnComponent implements OnInit {
 
   }
 
-  onEnter(value: string) {
-    const taskId =  this.taskStorageService.newTask(new Task(value, value, '0', this.column._id, 0));
-  }
-
-  openModal(task: Task) {
+  openModalTaskDetail(task: Task) {
     const dialogConfig = new MatDialogConfig();
     // The user can't close the dialog by clicking outside its body
     dialogConfig.disableClose = true;
@@ -79,6 +76,17 @@ export class ColumnComponent implements OnInit {
     dialogConfig.data = task;
 
     this.matDialog.open(TaskDetailComponent, dialogConfig);
+  }
+
+  openModalTaskAdd() {
+    const dialogConfig = new MatDialogConfig();
+    // The user can't close the dialog by clicking outside its body
+    dialogConfig.disableClose = true;
+    dialogConfig.id = "modal-component";
+    dialogConfig.height = "300px";
+    dialogConfig.width = "600px";
+    dialogConfig.data = this.column;
+    this.matDialog.open(TaskAddComponent, dialogConfig);
   }
 
 }

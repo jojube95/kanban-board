@@ -9,9 +9,10 @@ import { ColumnComponent } from './board/column/column.component';
 import { TaskComponent } from './board/column/task/task.component';
 import { TaskDetailComponent } from './board/column/task-detail/task-detail.component';
 import { EditInputComponent } from './board/column/task-detail/edit-input/edit-input.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
+import { TaskAddComponent } from './board/column/task-add/task-add.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {FormsModule} from '@angular/forms';
     ColumnComponent,
     TaskComponent,
     TaskDetailComponent,
-    EditInputComponent
+    EditInputComponent,
+    TaskAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,13 @@ import {FormsModule} from '@angular/forms';
     NoopAnimationsModule,
     FormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
+  ],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    TaskDetailComponent,
+    TaskAddComponent]
 })
 export class AppModule { }

@@ -1,7 +1,5 @@
 <div *ngIf="project | async as project">
-
   <div [style.backgroundColor]="project.color" style="padding: 24px">
-
     <div class="row" mat-dialog-title style="margin: 0; display: flex">
       <div class="col-auto">
         <div class="navbar-collapse">
@@ -11,11 +9,11 @@
               <button *ngFor="let project of (projects | async)" class="dropdown-item" style="cursor: pointer" (click)="onSelectProject(project)">{{ project.name }}</button>
             </div>
           </div>
-         </div>
+        </div>
       </div>
 
       <div class="col-auto" style="padding: 0;">
-        <app-edit-input [data]='task.name' (focusOut)='saveName($event)'></app-edit-input>
+        <app-edit-input [data]='taskAdd.name' (focusOut)='saveName($event)'>Name</app-edit-input>
       </div>
       <div class="col text-right">
         <button type="button" class="close" data-dismiss="alert" (click)="onClickClose()">
@@ -27,10 +25,13 @@
   </div>
 
   <div mat-dialog-content style="margin: 0; padding-top: 24px">
-    <app-edit-input [data]='task.description' (focusOut)='saveDescription($event)'></app-edit-input>
-    <p>{{task.timeSpend}}</p>
+    <app-edit-input [data]='taskAdd.description' (focusOut)='saveDescription($event)'>Description</app-edit-input>
   </div>
 
+  <div>
+    <button class="btn btn-outline-dark" style="margin-left: 24px; margin-top: 120px" (click)="addTask()">Add</button>
+  </div>
 </div>
+
 
 

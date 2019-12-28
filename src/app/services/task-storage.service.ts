@@ -14,11 +14,7 @@ export class TaskStorageService {
   constructor(private socket: Socket) { }
 
   public addTask(task: Task) {
-    // task._id = String(++this.lastid);
-    //
-    // this.tasks.subscribe(tasks => {
-    //   tasks.push(task);
-    // });
+    this.socket.emit('addTask', task);
   }
 
   public getTasks(): Observable<Task[]> {

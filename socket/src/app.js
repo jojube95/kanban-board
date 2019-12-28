@@ -1,6 +1,7 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const request = require('request');
 
 const boards = [
   { _id: '0', name: 'Board1',favourite: true },
@@ -27,7 +28,7 @@ const tasks = [
   { _id: '8', name: 'Task8', description: 'Task8Description', timeSpend: 0, timeStopwatch: 0, timeRunning: false, columnId: '5', projectId: '1' }
 ];
 
-
+let taskLastId = 8;
 
 io.on('connection', socket => {
     socket.on('getColumns', boardId => {
@@ -81,6 +82,18 @@ io.on('connection', socket => {
         socket.broadcast.emit('tasks' + column._id, tasks.filter(task => task.columnId == column._id));
       });
     });
+
+  socket.on('addTask', task => {
+    //Add task database
+    task._id = taskLastId++;
+    tasks.push(task);
+
+    //Iterate columns and emit('tasks' + columnId)
+    columns.forEach(column => {
+      //Send data to everyone
+      io.emit('tasks' + column._id, tasks.filter(task => task.columnId == column._id));
+    });
+  });
 
     io.emit('boards', boards);
 

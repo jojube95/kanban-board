@@ -31,41 +31,48 @@ const tasks = [
 let taskLastId = 8;
 
 io.on('connection', socket => {
-    socket.on('getColumns', boardId => {
-      let columnsToSend = [];
-      columns.forEach(column => {
-        if(column.boardId == boardId){
-          columnsToSend.push(column);
+    socket.on('getColumnsByBoard', boardId => {
+      //Get columns by boardID
+      request('http://localhost:3000/api/columns/getByBoard' + boardId, function (error, response, body) {
+        if (!error) {
+          //Send the data to socket
+          const data = JSON.parse(body);
+          socket.emit('columns', data.columns);
+        }
+        else{
+          console.log(error)
         }
       });
-      socket.emit('columns', columnsToSend);
+
     });
 
-    // socket.on('addColumn', column => {
-    //     //Add column to database
-    //
-    //     //Retrieve and emit boards
-    //     io.emit('boards', board);
-    //
-    //     //Retrieve and emit columns
-    //     socket.emit('columns', columns);
-    // });
-
-    // socket.on('editColumn', columns => {
-    //     //Update column to database
-    //
-    //     //Send data only to column_id reader user
-    //     socket.to(column._id).emit('columns', columns);
-    // });
-
     socket.on('getTasks', columnId => {
-      let tasksToSend = [];
-      tasks.forEach(task => {
-        if(task.columnId == columnId){
-          tasksToSend.push(task);
+      //Get tasks bu columnId
+      request('http://localhost:3000/api/tasks/getByColumn' + columnId, function (error, response, body) {
+        if (!error) {
+          //Send the data to socket
+          const data = JSON.parse(body);
+          socket.emit('tasks' + columnId, data.tasks);
+        }
+        else{
+          console.log(error)
         }
       });
-      socket.emit('tasks' + columnId, tasksToSend);
+    });
+
+    socket.on('getProject', task => {
+      //Get tasks bu columnId
+      request('http://localhost:3000/api/projects/getByTask' + task.projectId, function (error, response, body) {
+        if (!error) {
+          //Send the data to socket
+          const data = JSON.parse(body);
+          console.log(data.project[0]);
+          socket.emit('project' + task._id, data.project);
+        }
+        else{
+          console.log(error)
+        }
+      });
     });
 
     socket.on('updateTask', task => {
@@ -78,24 +85,37 @@ io.on('connection', socket => {
 
       //Iterate columns and emit('tasks' + columnId)
       columns.forEach(column => {
+        //Get tasks by columnId
         //Send data to everyone except sender
         socket.broadcast.emit('tasks' + column._id, tasks.filter(task => task.columnId == column._id));
       });
     });
 
-  socket.on('addTask', task => {
-    //Add task database
-    task._id = taskLastId++;
-    tasks.push(task);
+    socket.on('addTask', task => {
+      //Add task database
+      task._id = taskLastId++;
+      tasks.push(task);
 
-    //Iterate columns and emit('tasks' + columnId)
-    columns.forEach(column => {
-      //Send data to everyone
-      io.emit('tasks' + column._id, tasks.filter(task => task.columnId == column._id));
+      //Iterate columns and emit('tasks' + columnId)
+      columns.forEach(column => {
+        //Get tasks by columnId
+        //Send data to everyone
+        io.emit('tasks' + column._id, tasks.filter(task => task.columnId == column._id));
+      });
     });
-  });
 
-    io.emit('boards', boards);
+    //Get boards from database and emmit
+    request('http://localhost:3000/api/boards/get', function (error, response, body) {
+      if (!error) {
+        //Send the data to socket
+        const data = JSON.parse(body);
+        io.emit('boards', data.boards);
+      }
+      else{
+        console.log(error)
+      }
+    });
+
 
     console.log(`Socket ${socket.id} has connected`);
 });

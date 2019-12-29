@@ -15,6 +15,6 @@ export class ColumnStorageService {
   }
 
   public getColumnsByBoard(board: Board){
-    this.socket.emit('getColumns', board._id);
+    this.socket.emit('getColumnsByBoard', board._id);
   }
 }

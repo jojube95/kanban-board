@@ -26,6 +26,9 @@ export class ColumnComponent implements OnInit {
   }
   ngOnInit(): void {
     this.tasks = this.socket.fromEvent<Task[]>('tasks' + this.column._id);
+    this.tasks.subscribe(tasks => {
+      //console.log(tasks);
+    })
     this.taskStorageService.getTasksByColumn(this.column);
   }
 

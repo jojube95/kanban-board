@@ -24,7 +24,6 @@ router.get('/get', (req, res, next) => {
 
 router.get('/getByTask:id', (req, res, next) => {
   Project.find({ _id: req.params.id }).then(result =>{
-    console.log(result);
     res.status(200).json({
       message: "Success",
       project: result

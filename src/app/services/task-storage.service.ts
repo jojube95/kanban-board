@@ -25,7 +25,7 @@ export class TaskStorageService {
     this.socket.emit('getTasks', column._id);
   }
 
-  public updateTask(task: Task){
-    this.socket.emit('updateTask', task);
+  public moveTask(data){
+    this.socket.emit('moveTask', data);
   }
 }

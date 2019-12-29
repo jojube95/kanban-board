@@ -24,7 +24,6 @@ router.get('/get', (req, res, next) => {
 
 router.get('/getByBoard:id', (req, res, next) => {
   Column.find({ boardId: req.params.id }).then(result =>{
-    console.log(result);
     res.status(200).json({
       message: "Success",
       columns: result

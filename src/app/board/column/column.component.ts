@@ -27,7 +27,7 @@ export class ColumnComponent implements OnInit {
   ngOnInit(): void {
     this.tasks = this.socket.fromEvent<Task[]>('tasks' + this.column._id);
     this.tasks.subscribe(tasks => {
-      //console.log(tasks);
+      console.log(tasks);
     })
     this.taskStorageService.getTasksByColumn(this.column);
   }
@@ -73,7 +73,9 @@ export class ColumnComponent implements OnInit {
       //Update task values
       taskData.columnId = this.column._id;
       //Call service
-      this.taskStorageService.updateTask(taskData);
+      //console.log('Moving task');
+      this.taskStorageService.moveTask({taskId: taskData._id, columnId: taskData.columnId, boardId: this.column.boardId});
+
     }
 
   }

@@ -1,6 +1,6 @@
-<div class="board-column" (dragover)="allowDrop($event)" (drop)="drop($event)">
+<div class="board-column" (dragover)="allowDrop($event)" (drop)="drop($event)" id="{{column._id}}">
     <div class="column-title">
-      {{ column.name }}
+      {{ column.name }} | {{column._id}}
     </div>
 
     <div class="tasks-container">

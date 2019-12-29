@@ -22,6 +22,20 @@ router.get('/get', (req, res, next) => {
   });
 });
 
+router.post('/moveTask', (req, res, next) => {
+  Task.updateOne({'_id': req.body.taskId}, { $set: { columnId: req.body.columnId}}).then(result => {
+    res.status(200).json({
+      message: 'Task moved successfully',
+      result: result
+    });
+  }).catch(err => {
+    res.status(500).json({
+      error: err
+
+    });
+  });
+});
+
 router.get('/getByColumn:id', (req, res, next) => {
   Task.find({ columnId: req.params.id }).then(result =>{
     res.status(200).json({

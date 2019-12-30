@@ -36,6 +36,20 @@ router.post('/moveTask', (req, res, next) => {
   });
 });
 
+router.post('/update', (req, res, next) => {
+  Task.updateOne({'_id': req.body._id}, { $set: { name: req.body.name, description: req.body.description, projectId: req.body.projectId}}).then(result => {
+    res.status(200).json({
+      message: 'Task updated successfully',
+      result: result
+    });
+  }).catch(err => {
+    res.status(500).json({
+      error: err
+
+    });
+  });
+});
+
 router.get('/getByColumn:id', (req, res, next) => {
   Task.find({ columnId: req.params.id }).then(result =>{
     res.status(200).json({
@@ -53,12 +67,13 @@ router.get('/getByColumn:id', (req, res, next) => {
 router.post('/add', (req, res, next) => {
   console.log('Try to add task to db');
   const task = new Task({
-    name: req.body.task.name,
-    description: req.body.task.description,
-    timeSpend: req.body.task.timeSpend,
-    columnId: req.body.task.columnId,
-    projectId: req.body.task.projectId,
-    projectName: req.body.task.projectName
+    name: req.body.name,
+    description: req.body.description,
+    timeSpend: req.body.timeSpend,
+    timeStopwatch: req.body.timeStopwatch,
+    timeRunning: req.body.timeRunning,
+    columnId: req.body.columnId,
+    projectId: req.body.projectId
   });
   task.save().then(createdTask => {
     res.status(201).json({
@@ -71,7 +86,7 @@ router.post('/add', (req, res, next) => {
 router.post('/delete', (req, res, next) => {
   console.log('Try to delete task to db');
 
-  Task.deleteOne({ _id: req.body.taskId }).then(result => {
+  Task.deleteOne({ _id: req.body._id }).then(result => {
     res.status(200).json({ message: "Task deleted!" });
   });
 });

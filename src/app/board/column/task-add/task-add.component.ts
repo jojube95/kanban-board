@@ -23,9 +23,10 @@ export class TaskAddComponent implements OnInit {
 
   ngOnInit() {
     document.getElementById('modal-component').setAttribute("style", "padding: 0;");
-    this.projects = this.projectStorageService.getProjects();
+    this.projects = this.projectStorageService.projects;
+    this.projectStorageService.getProjects();
     this.project = of(new Project('Select project', 'rgb(66, 73, 73)'));
-    this.taskAdd = new Task('Name', 'Description', '', '', 0);
+    this.taskAdd = new Task('Name', 'Description', '', '', 0, 0, false);
   }
 
   addTask(){

@@ -10,15 +10,14 @@ import {Socket} from 'ngx-socket-io';
 })
 export class ProjectStorageService {
 
+  projects = this.socket.fromEvent<Project[]>('projects');
+
   constructor(private socket: Socket){
 
   }
 
-  public getProjects(): Observable<Project[]> {
-    const projectsObservable = new Observable<Project[]>(observer => {
-      //observer.next(this.projects);
-    });
-    return projectsObservable;
+  public getProjects() {
+    this.socket.emit('getProjects');
   }
 
   getProjectByTask(task: Task){

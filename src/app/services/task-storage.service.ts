@@ -28,4 +28,12 @@ export class TaskStorageService {
   public moveTask(boardId: string, columnOriginId: string,columnDestinyId: string, taskId: string){
     this.socket.emit('moveTask', {boardId: boardId, columnOriginId: columnOriginId, columnDestinyId: columnDestinyId, taskId: taskId});
   }
+
+  public editTask(task: Task){
+    this.socket.emit('editTask', {_id: task._id, name: task.name, description: task.description, projectId: task.projectId, columnId: task.columnId});
+  }
+
+  public deleteTask(task:Task){
+    this.socket.emit('deleteTask', {_id: task._id, columnId: task.columnId});
+  }
 }

@@ -5,6 +5,7 @@ import {Project} from '../../../models/project';
 import {ProjectStorageService} from '../../../services/project-storage.service';
 import {Observable, of} from 'rxjs';
 import {Socket} from 'ngx-socket-io';
+import {TaskStorageService} from '../../../services/task-storage.service';
 
 @Component({
   selector: 'task-detail',
@@ -14,7 +15,7 @@ export class TaskDetailComponent implements OnInit {
   project: Observable<Project>;
   projects: Observable<Project[]>;
 
-  constructor(private socket: Socket, private projectStorageService: ProjectStorageService, public dialogRef: MatDialogRef<TaskDetailComponent>, @Inject(MAT_DIALOG_DATA) public task: any) {
+  constructor(private socket: Socket, private taskStorageService: TaskStorageService, private projectStorageService: ProjectStorageService, public dialogRef: MatDialogRef<TaskDetailComponent>, @Inject(MAT_DIALOG_DATA) public task: any) {
 
   }
 
@@ -22,11 +23,17 @@ export class TaskDetailComponent implements OnInit {
     document.getElementById('modal-component').setAttribute("style", "padding: 0;");
     this.project = this.socket.fromEvent<Project>('project' + this.task._id);
     this.projectStorageService.getProjectByTask(this.task);
-    this.projects = this.projectStorageService.getProjects();
+    this.projects = this.projectStorageService.projects;
+    this.projectStorageService.getProjects();
   }
 
 
   edit(){
+    this.taskStorageService.editTask(this.task);
+  }
+
+  deleteTask(){
+    this.taskStorageService.deleteTask(this.task);
     this.dialogRef.close();
   }
 
@@ -35,15 +42,24 @@ export class TaskDetailComponent implements OnInit {
   }
 
   saveDescription(value){
-    this.task.description = value;
-  }
+    if(value != this.task.description){
+      this.task.description = value;
+      this.edit();
+    }
+   }
 
   saveName(value){
-    this.task.name = value;
+    if(value != this.task.name){
+      this.task.name = value;
+      this.edit();
+    }
   }
 
   onSelectProject(project: Project){
     this.project = of(project);
-    this.task.projectId = project._id;
+    if(project._id != this.task.projectId){
+      this.task.projectId = project._id;
+      this.edit();
+    }
   }
 }

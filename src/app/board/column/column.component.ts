@@ -52,9 +52,7 @@ export class ColumnComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
 
-    let movedTask = event.item.data;
-
-    this.taskStorageService.moveTask(this.column.boardId, this.column._id, movedTask._id);
+    this.taskStorageService.moveTask(this.column.boardId, event.previousContainer.id, event.container.id, event.item.data._id);
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -64,9 +62,6 @@ export class ColumnComponent implements OnInit {
         event.previousIndex,
         event.currentIndex);
     }
-
-
-
   }
 
 }

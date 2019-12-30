@@ -25,7 +25,7 @@ export class TaskStorageService {
     this.socket.emit('getTasks', column._id);
   }
 
-  public moveTask(boardId: string, columnId: string, taskId: string){
-    this.socket.emit('moveTask', {boardId: boardId, columnId: columnId, taskId: taskId});
+  public moveTask(boardId: string, columnOriginId: string,columnDestinyId: string, taskId: string){
+    this.socket.emit('moveTask', {boardId: boardId, columnOriginId: columnOriginId, columnDestinyId: columnDestinyId, taskId: taskId});
   }
 }

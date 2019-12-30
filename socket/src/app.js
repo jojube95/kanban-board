@@ -54,47 +54,37 @@ io.on('connection', socket => {
 
       console.log('User ' + socket.id + ' trying move task');
 
+      //console.log(data);
       //Update task on database
       var options = {
         uri: 'http://localhost:3000/api/tasks/moveTask',
         method: 'POST',
-        json: {taskId: data.taskId, columnId: data.columnId}
+        json: {taskId: data.taskId, columnId: data.columnDestinyId}
       };
 
       request.post(options, function (error, response, body) {
         if (!error) {
-          //Get columns of current board
-          request('http://localhost:3000/api/columns/getByBoard' + data.boardId, function (error, response, body) {
+          request('http://localhost:3000/api/tasks/getByColumn' + data.columnOriginId, function (error, response, body) {
             if (!error) {
               //Send the data to socket
-              const columns = JSON.parse(body).columns;
-              console.log(columns);
-              //Iterate columns and emit('tasks' + columnId)
-              columns.forEach(column => {
-                //Get tasks by columnId
-                //Send data to everyone except sender
-                request('http://localhost:3000/api/tasks/getByColumn' + column._id, function (error, response, body) {
-                  if (!error) {
-                    //Send the data to socket
-                    const data = JSON.parse(body);
-                    socket.broadcast.emit('tasks' + column._id, data.tasks);
-                  }
-                  else{
-                    console.log(error)
-                  }
-                });
-
-              });
-              //console.log('User ' + socket.id + ' set semaforo to true');
-              semaforo = true;
-              //console.log(movements++);
+              const data1 = JSON.parse(body);
+              socket.broadcast.emit('tasks' + data.columnOriginId, data1.tasks);
             }
             else{
               console.log(error)
             }
           });
 
-
+          request('http://localhost:3000/api/tasks/getByColumn' + data.columnDestinyId, function (error, response, body) {
+            if (!error) {
+              //Send the data to socket
+              const data2 = JSON.parse(body);
+              socket.broadcast.emit('tasks' + data.columnDestinyId, data2.tasks);
+            }
+            else{
+              console.log(error)
+            }
+          });
         }
         else{
           console.log(error)

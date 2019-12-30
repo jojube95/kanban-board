@@ -1,6 +1,6 @@
 <div class="board-column" id="{{column._id}}" cdkDropList [cdkDropListData]="tasks | async" (cdkDropListDropped)="drop($event)">
     <div class="column-title">
-      {{ column.name }} | {{column._id}}
+      {{ column.name }}
     </div>
 
     <div class="tasks-container"><!-- cdkDropList -->

@@ -17,18 +17,13 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class ColumnComponent implements OnInit {
   @Input() column: Column;
-  tasks: Task[];
+  tasks: Observable<Task[]>;
 
   constructor(private matDialog: MatDialog, private taskStorageService: TaskStorageService, private socket: Socket) { }
 
   ngOnInit(): void {
-    this.socket.fromEvent<Task[]>('tasks' + this.column._id).subscribe(tasks => {
-      this.tasks = [];
-      tasks.forEach(task => {
-        this.tasks.push(task)
-      });
-      //console.log(tasks);
-    });
+    this.tasks = this.socket.fromEvent<Task[]>('tasks' + this.column._id);
+
     this.taskStorageService.getTasksByColumn(this.column);
   }
 
@@ -56,7 +51,10 @@ export class ColumnComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+
     let movedTask = event.item.data;
+
+    this.taskStorageService.moveTask(this.column.boardId, this.column._id, movedTask._id);
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -68,7 +66,7 @@ export class ColumnComponent implements OnInit {
     }
 
 
-    this.taskStorageService.moveTask(this.column.boardId, this.column._id, movedTask._id);
+
   }
 
 }

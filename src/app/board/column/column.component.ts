@@ -51,6 +51,8 @@ export class ColumnComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
+    //Set the task columnId
+    event.item.data.columnId = event.container.id;
 
     this.taskStorageService.moveTask(this.column.boardId, event.previousContainer.id, event.container.id, event.item.data._id);
 

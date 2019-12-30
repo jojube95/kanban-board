@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../models/task';
 import { Column } from '../models/column';
-import { Observable } from 'rxjs';
+import {interval, Observable} from 'rxjs';
 import {Socket} from 'ngx-socket-io';
 
 @Injectable({
@@ -33,7 +33,8 @@ export class TaskStorageService {
     this.socket.emit('editTask', {_id: task._id, name: task.name, description: task.description, projectId: task.projectId, columnId: task.columnId});
   }
 
-  public deleteTask(task:Task){
+  public deleteTask(task: Task){
     this.socket.emit('deleteTask', {_id: task._id, columnId: task.columnId});
   }
+
 }

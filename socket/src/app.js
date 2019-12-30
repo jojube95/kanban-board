@@ -3,6 +3,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const request = require('request');
 
+let intervals = [];
+
 io.on('connection', socket => {
 
 
@@ -207,11 +209,7 @@ io.on('connection', socket => {
       }
     });
 
-
-
-
-
-    console.log(`Socket ${socket.id} has connected`);
+  console.log(`Socket ${socket.id} has connected`);
 });
 
 http.listen(4444, () => {

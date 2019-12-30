@@ -3,7 +3,7 @@ export class Task {
   name: string;
   description: string;
   timeSpend: Number;
-  timeStopwatch: Number;
+  timeStopwatch: any;
   timeRunning: boolean;
   columnId: string;
   projectId: string;
@@ -17,4 +17,5 @@ export class Task {
     this.columnId = columnId;
     this.projectId = projectId;
   }
+
 }

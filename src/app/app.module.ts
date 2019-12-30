@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import { TaskAddComponent } from './board/column/task-add/task-add.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { DragDropModule} from '@angular/cdk/drag-drop';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -34,13 +36,16 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MatDialogModule,
     NoopAnimationsModule,
     FormsModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    BrowserAnimationsModule,
+    DragDropModule
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} }
   ],
   bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   entryComponents: [
     TaskDetailComponent,
     TaskAddComponent]

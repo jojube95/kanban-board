@@ -3,9 +3,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const request = require('request');
 
-let semaforo = true;
-let movements = 0;
-
 io.on('connection', socket => {
 
 
@@ -55,12 +52,8 @@ io.on('connection', socket => {
 
     socket.on('moveTask', data => {
 
-      while(!semaforo){
-        console.log('User ' + socket.id + ' waiting');
-      }
       console.log('User ' + socket.id + ' trying move task');
-      semaforo = false;
-      //console.log('User ' + socket.id + ' set semaforo to false');
+
       //Update task on database
       var options = {
         uri: 'http://localhost:3000/api/tasks/moveTask',
@@ -75,6 +68,7 @@ io.on('connection', socket => {
             if (!error) {
               //Send the data to socket
               const columns = JSON.parse(body).columns;
+              console.log(columns);
               //Iterate columns and emit('tasks' + columnId)
               columns.forEach(column => {
                 //Get tasks by columnId
@@ -83,7 +77,7 @@ io.on('connection', socket => {
                   if (!error) {
                     //Send the data to socket
                     const data = JSON.parse(body);
-                    io.emit('tasks' + column._id, data.tasks);
+                    socket.broadcast.emit('tasks' + column._id, data.tasks);
                   }
                   else{
                     console.log(error)
@@ -126,7 +120,7 @@ io.on('connection', socket => {
       if (!error) {
         //Send the data to socket
         const data = JSON.parse(body);
-        io.emit('boards', data.boards);
+        socket.emit('boards', data.boards);
       }
       else{
         console.log(error)

@@ -1,12 +1,10 @@
-<div class="board-column" (dragover)="allowDrop($event)" (drop)="drop($event)" id="{{column._id}}">
+<div class="board-column" id="{{column._id}}" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)">
     <div class="column-title">
       {{ column.name }} | {{column._id}}
     </div>
 
-    <div class="tasks-container">
-      <app-task *ngFor="let task of (tasks | async)" [task]="task" (click)="openModalTaskDetail(task)"></app-task>
+    <div class="tasks-container"><!-- cdkDropList -->
+      <app-task *ngFor="let task of tasks" [task]="task" (click)="openModalTaskDetail(task)" cdkDrag [cdkDragData]="task"></app-task><!-- cdkDrag -->
     </div>
-
-  <!--<input #addTaskInput type="text" (keyup.enter)="onEnter(addTaskInput.value); addTaskInput.value=''; displayAddTask=false;" *ngIf="displayAddTask" autofocus>-->
-  <button class="btn" (click)="openModalTaskAdd()">Add a task...</button>
 </div>
+<button class="btn" (click)="openModalTaskAdd()">Add a task...</button>

@@ -12,21 +12,22 @@
     <div ngbDropdown class="d-inline-block">
       <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{selectedBoard.name}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem *ngFor="let board of (boards | async)" cdkDrag (click)="onClickBoard(board)">{{board.name}}</button>
+        <button ngbDropdownItem *ngFor="let board of (boards | async)" (click)="onClickBoard(board)">{{board.name}}</button>
 
       </div>
     </div>
 
   </nav>
+
+
   <div class="root">
 
     <div class="board">
 
       <div class="board-wrapper">
 
-        <div class="board-columns">
+        <div class="board-columns" cdkDropListGroup><!-- cdkDropListGroup-->
           <app-column class="board-column" *ngFor="let column of (columns | async)" [column]="column"></app-column>
-
         </div>
 
       </div>

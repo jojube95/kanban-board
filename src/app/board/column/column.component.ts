@@ -7,6 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskDetailComponent} from './task-detail/task-detail.component';
 import {TaskAddComponent} from './task-add/task-add.component';
 import {Socket} from 'ngx-socket-io';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -16,68 +17,19 @@ import {Socket} from 'ngx-socket-io';
 })
 export class ColumnComponent implements OnInit {
   @Input() column: Column;
-  tasks: Observable<Task[]>;
-  displayAddTask = false;
+  tasks: Task[];
 
   constructor(private matDialog: MatDialog, private taskStorageService: TaskStorageService, private socket: Socket) { }
 
-  toggleDisplayAddTask() {
-    this.displayAddTask = ! this.displayAddTask;
-  }
   ngOnInit(): void {
-    this.tasks = this.socket.fromEvent<Task[]>('tasks' + this.column._id);
-    this.tasks.subscribe(tasks => {
-      console.log(tasks);
-    })
+    this.socket.fromEvent<Task[]>('tasks' + this.column._id).subscribe(tasks => {
+      this.tasks = [];
+      tasks.forEach(task => {
+        this.tasks.push(task)
+      });
+      //console.log(tasks);
+    });
     this.taskStorageService.getTasksByColumn(this.column);
-  }
-
-  allowDrop($event) {
-    $event.preventDefault();
-  }
-
-  drop($event) {
-    $event.preventDefault();
-    //Catched element Id
-    const data = $event.dataTransfer.getData('text');
-
-    const taskData = JSON.parse($event.dataTransfer.getData('task'));
-
-    //Element target
-    let target = $event.target;
-
-    //Class of element target
-    const targetClassName = target.className;
-
-    while( target.className !== 'board-column') {
-      target = target.parentNode;
-    }
-
-    target = target.querySelector('.tasks-container');
-
-    if(targetClassName === 'tasks-container') {
-      $event.target.parentNode.insertBefore(document.getElementById(data), $event.target);
-    }
-    else if(targetClassName === 'column-title') {
-      if (target.children.length) {
-        target.insertBefore(document.getElementById(data), target.children[0]);
-      }else {
-        target.appendChild(document.getElementById(data));
-      }
-    }
-    else {
-      target.appendChild(document.getElementById(data));
-    }
-
-    if(taskData.columnId != this.column._id){
-      //Update task values
-      taskData.columnId = this.column._id;
-      //Call service
-      //console.log('Moving task');
-      this.taskStorageService.moveTask({taskId: taskData._id, columnId: taskData.columnId, boardId: this.column.boardId});
-
-    }
-
   }
 
   openModalTaskDetail(task: Task) {
@@ -101,6 +53,22 @@ export class ColumnComponent implements OnInit {
     dialogConfig.width = "600px";
     dialogConfig.data = this.column;
     this.matDialog.open(TaskAddComponent, dialogConfig);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    let movedTask = event.item.data;
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
+    }
+
+
+    this.taskStorageService.moveTask(this.column.boardId, this.column._id, movedTask._id);
   }
 
 }

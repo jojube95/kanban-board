@@ -20,25 +20,4 @@ export class TaskComponent implements OnInit {
     this.projectStorageService.getProjectByTask(this.task);
   }
 
-  dragStart(ev) {
-    ev.dataTransfer.setData('text', ev.target.id);
-    ev.dataTransfer.setData('task', JSON.stringify(this.task));
-    //console.log('Origin column: ' + this.task.columnId);
-  }
-
-  dragEnd($event) {
-    $event.preventDefault();
-
-    //Search the column element and get the columnId
-    let columnId = document.getElementById(this.task._id).parentElement.parentElement.id;
-
-    if(columnId == ''){
-      columnId = document.getElementById(this.task._id).parentElement.parentElement.children[0].id;
-    }
-
-    //Set the columnId to the droped task
-    this.task.columnId = columnId;
-    document.getElementById(this.task._id).remove();
-  }
-
 }

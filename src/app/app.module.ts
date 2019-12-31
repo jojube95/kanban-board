@@ -16,6 +16,7 @@ import { TaskAddComponent } from './board/column/task-add/task-add.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { DragDropModule} from '@angular/cdk/drag-drop';
+import { DoingListComponent } from './board/doing-list/doing-list.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -28,6 +29,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     TaskDetailComponent,
     EditInputComponent,
     TaskAddComponent,
+    DoingListComponent,
   ],
   imports: [
     BrowserModule,

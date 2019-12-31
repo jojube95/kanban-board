@@ -22,17 +22,31 @@
 
   <div class="root">
 
-    <div class="board">
+    <div class="container" style="margin-left: 0px">
+      <div class="row" style="flex-wrap: nowrap">
 
-      <div class="board-wrapper">
+        <div class="col-auto">
+          <div class="board">
+            <div class="board-wrapper container">
 
-        <div class="board-columns" cdkDropListGroup><!-- cdkDropListGroup-->
-          <app-column class="board-column" *ngFor="let column of (columns | async)" [column]="column"></app-column>
+              <div class="board-columns row" style="flex-wrap: nowrap" cdkDropListGroup><!-- cdkDropListGroup-->
+                <app-column class="board-column col-auto" *ngFor="let column of (columns | async)" [column]="column"></app-column>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="taskStorageService.doingTasks.length > 0" class="col-auto">
+          <app-doing-list [tasks]="taskStorageService.doingTasks"></app-doing-list>
         </div>
 
       </div>
 
+
     </div>
+
+
 
   </div>
 

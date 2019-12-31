@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../models/task';
+import {Task} from '../models/task';
 import { Column } from '../models/column';
 import {interval, Observable} from 'rxjs';
 import {Socket} from 'ngx-socket-io';
@@ -10,6 +10,8 @@ import {Socket} from 'ngx-socket-io';
 export class TaskStorageService {
 
   tasks = this.socket.fromEvent<Task[]>('tasks');
+
+  doingTasks: Task[] = [];
 
   constructor(private socket: Socket) { }
 
@@ -35,6 +37,14 @@ export class TaskStorageService {
 
   public deleteTask(task: Task){
     this.socket.emit('deleteTask', {_id: task._id, columnId: task.columnId});
+  }
+
+  public addTaskToDoing(task: Task){
+    this.doingTasks.push(task);
+  }
+
+  public popTaskFromDoing(task: Task){
+    this.doingTasks.splice( this.doingTasks.indexOf(task), 1 );
   }
 
 }

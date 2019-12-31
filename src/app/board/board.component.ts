@@ -3,7 +3,9 @@ import {Column} from "../models/column";
 import { Observable } from 'rxjs';
 import { ColumnStorageService } from '../services/column-storage.service';
 import {Board} from "../models/board";
+import {Task} from "../models/task";
 import {BoardStorageService} from "../services/board-storage.service";
+import {TaskStorageService} from '../services/task-storage.service';
 
 @Component({
   selector: 'app-board',
@@ -15,7 +17,7 @@ export class BoardComponent implements OnInit {
   boards: Observable<Board[]>;
   columns: Observable<Column[]>;
 
-  constructor(private boardStorageService: BoardStorageService, private columnStorageService: ColumnStorageService) { }
+  constructor(private boardStorageService: BoardStorageService, private columnStorageService: ColumnStorageService, public taskStorageService: TaskStorageService) { }
 
   ngOnInit() {
     this.selectedBoard = new Board('Select board', false);
@@ -28,6 +30,8 @@ export class BoardComponent implements OnInit {
         }
       });
     });
+
+    //this.taskStorageService.addTaskToDoing(new Task('Doing1', 'Doing1', '0', '0', 0, 0, false))
 
   }
 

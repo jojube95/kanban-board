@@ -15,6 +15,7 @@ export class TaskComponent implements OnInit, OnDestroy {
   @Input() task: Task;
   project: Observable<Project>;
   timer;
+  @Input() showTimer: boolean;
 
   constructor(private socket: Socket, private projectStorageService: ProjectStorageService, private taskStorageService: TaskStorageService) { }
 
@@ -29,12 +30,16 @@ export class TaskComponent implements OnInit, OnDestroy {
       this.timer = interval(60000).subscribe(() => {
         this.task.timeStopwatch++;
       });
-      this.taskStorageService.addTaskToDoing(this.task);
+      if(!this.taskStorageService.doingTasks.includes(this.task)){
+
+        this.taskStorageService.addTaskToDoing(this.task);
+      }
     }
     else{
-      this.taskStorageService.popTaskFromDoing(this.task);
+      if(this.taskStorageService.doingTasks.includes(this.task)) {
+        this.taskStorageService.popTaskFromDoing(this.task);
+      }
     }
-
   }
 
   ngOnDestroy() {

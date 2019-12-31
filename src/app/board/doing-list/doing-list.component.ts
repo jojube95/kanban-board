@@ -7,7 +7,7 @@ import {Task} from 'protractor/built/taskScheduler';
   styleUrls: ['./doing-list.component.scss']
 })
 export class DoingListComponent implements OnInit {
-  @Input() tasks: [];
+  @Input() tasks: Task[];
   constructor() { }
 
   ngOnInit() {

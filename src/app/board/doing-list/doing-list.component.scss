@@ -1,0 +1,52 @@
+.task {
+  padding: 15px 12px;
+  background: white;
+  border-radius: 4px;
+
+  margin-bottom: 15px;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05),
+  0 3px 14px 2px rgba(0, 0, 0, 0.05);
+}
+
+.projectName {
+  font-weight: bolder;
+  margin-right: 5px;
+  color: rgba(black, 0.8);
+}
+
+.taskName {
+  font-weight: 500;
+  color: rgba(black, 0.8);
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-basis: 0; // to force the columns to all be the same size, regardless of content
+
+  min-width: 300px;
+  margin: 50px;
+  padding: 25px;
+
+  border-radius: 4px;
+
+  background: rgba(grey, 0.7);
+}
+
+.column-title {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: rgba(black, 0.7);
+}
+
+.tasks-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
